@@ -6,7 +6,12 @@ import authRouter from './routes/auth.route.js';
 import authMiddleware from './middlewares/auth.middleware.js';
 import UserRouter from './routes/user.route.js';
 import { sendOtpEmail } from './utils/mailer.js';
+import productRouter from './routes/product.routes.js';
 // import  './utils/mailer.js';
+
+
+
+
 dotenv.config();
 
 const app = express();
@@ -27,9 +32,13 @@ app.get('/protected', authMiddleware,(req, res) => {
   res.send('Hello World!');
 });
 
-app.use("/user", UserRouter)
+app.use("/api/user", UserRouter)
+app.use('/api/auth', authRouter);
+app.use('/api/product', productRouter);
 
-app.use('/auth', authRouter);
+
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
