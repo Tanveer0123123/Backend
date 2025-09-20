@@ -3,8 +3,19 @@ import Product from '../models/product.js';
 // Get all products
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
+    const page = parseInt(req.query.page) || 1; // default to page 1
+    const limit = 8; // 8 products per page
+    const skip = (page - 1) * limit;
+
+    const total = await Product.countDocuments();
+    const products = await Product.find().skip(skip).limit(limit);
+
+    res.json({
+      page,
+      totalPages: Math.ceil(total / limit),
+      totalProducts: total,
+      products
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
