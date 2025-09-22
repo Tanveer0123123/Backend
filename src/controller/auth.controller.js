@@ -115,7 +115,7 @@ export const handleLogin = async (req, res) => {
 
     const token = jwt.sign({ id: user._id, email }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-    res.status(200).json({ message: "Login successful", user: { id: user._id, name: user.name, email }, token });
+    res.status(200).json({ message: "Login successful", user: { id: user._id, name: user.name, email, cart: user.cart }, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -125,4 +125,22 @@ export const handleLogin = async (req, res) => {
 // ================= LOGOUT =================
 export const handleLogout = async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
+};
+
+// ================= GET PROFILE =================
+export const handleGetProfile = async (req, res) => {
+  try {
+    // The user object is attached to the request by the authMiddleware
+    const user = req.user;
+    res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        cart: user.cart,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };

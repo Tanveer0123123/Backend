@@ -7,6 +7,7 @@ import authMiddleware from './middlewares/auth.middleware.js';
 import UserRouter from './routes/user.route.js';
 import { sendOtpEmail } from './utils/mailer.js';
 import productRouter from './routes/product.routes.js';
+import cartRouter from './routes/cart.route.js';
 // import  './utils/mailer.js';
 
 
@@ -18,7 +19,7 @@ const app = express();
 const PORT = process.env.PORT || 6000;
 
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:["http://localhost:5173", "http://localhost:5174"],
   credentials:true
 }));
 app.use(express.json());
@@ -35,6 +36,7 @@ app.get('/protected', authMiddleware,(req, res) => {
 app.use("/api/user", UserRouter)
 app.use('/api/auth', authRouter);
 app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
 
 
 
